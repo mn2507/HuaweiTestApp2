@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HuaweiTestApp4</string>
+    <string name="hms_token">HMS Token: %s</string>
 </resources>

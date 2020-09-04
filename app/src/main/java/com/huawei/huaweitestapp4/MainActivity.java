@@ -15,6 +15,7 @@ import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.push.HmsMessaging;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView mTokenTv;
@@ -26,9 +27,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mTokenTv = findViewById(R.id.push_txt_token);
         mGetTokenBtn = findViewById(R.id.get_txt_btn);
-        mGetTokenBtn.setOnClickListener((View.OnClickListener) this);
+        mGetTokenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         HmsInstanceId inst = HmsInstanceId.getInstance(this);
+
         getToken(inst);
         Log.d("Tag1","entering onCreate");
     }
@@ -40,8 +47,19 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String HMS_APPID = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-                    String token = inst.getToken(HMS_APPID, "HCM");
-                    Log.e(TAG, "get token" + token);
+                    final String token = inst.getToken(HMS_APPID, "HCM");
+                    String msg = getString(R.string.hms_token, token);
+                    Log.d(TAG, msg);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTokenTv.setText("" + token);
+                        }
+                    });
+
+
+                    Log.d("TAGToken", "get token" + token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

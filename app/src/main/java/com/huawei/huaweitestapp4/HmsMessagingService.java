@@ -1,5 +1,6 @@
 package com.huawei.huaweitestapp4;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,33 +15,36 @@ public class HmsMessagingService extends HmsMessageService {
     public void onNewToken(String s) {
         super.onNewToken(s);
 
-        Toast.makeText(this,"token" + s, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "token" + s, Toast.LENGTH_LONG).show();
         Log.d(PUSH_TAG, "Message token: " + s);
-        Log.d("Tag5","entering onNewToken");
+        getSharedPreferences("_", MODE_PRIVATE).edit().putString("hms_token", s).apply();
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if(remoteMessage.getData().length() > 0) {
+        if (remoteMessage.getData().length() > 0) {
             Log.d(PUSH_TAG, "Message data payload: " + remoteMessage.getData());
             processCustomMessage(this, remoteMessage.getData());
         }
-        if(remoteMessage.getNotification() != null) {
+        if (remoteMessage.getNotification() != null) {
             Log.d(PUSH_TAG, "Message Notification Body: " + remoteMessage.getNotification());
         }
-        Log.d("Tag6","entering onMessageReceived");
     }
 
     @Override
-    public void onMessageSent (String s) {
+    public void onMessageSent(String s) {
         super.onMessageSent(s);
-        Toast.makeText(this,"onMessageSent:" + s, Toast.LENGTH_LONG).show();
-        Log.d("Tag7","entering onMessageSent");
+        Toast.makeText(this, "onMessageSent:" + s, Toast.LENGTH_LONG).show();
     }
 
     private void processCustomMessage(HmsMessagingService hmsMessagingService, String data) {
-        Log.d("Tag8","entering processCustomMessage");
+    }
+
+    public static String getToken(Context context) {
+        Log.d("Tagtoken","getToken()");
+        return context.getSharedPreferences("_", MODE_PRIVATE).getString("hms_token", "empty");
     }
 }
+
