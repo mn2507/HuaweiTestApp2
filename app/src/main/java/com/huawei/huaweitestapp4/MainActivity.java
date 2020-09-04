@@ -3,6 +3,7 @@ package com.huawei.huaweitestapp4;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,19 +26,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTokenTv = findViewById(R.id.push_txt_token);
-        mGetTokenBtn = findViewById(R.id.get_txt_btn);
-        mGetTokenBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        mTokenTv = findViewById(R.id.push_txt_token);
+//        mGetTokenBtn = findViewById(R.id.get_txt_btn);
+//        mGetTokenBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         HmsInstanceId inst = HmsInstanceId.getInstance(this);
-
+        String android_id = Settings.Secure.getString(this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
         getToken(inst);
-        Log.d("Tag1","entering onCreate");
+        Log.d("Tag1",android_id);
     }
 
 
